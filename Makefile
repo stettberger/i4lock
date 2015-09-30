@@ -27,9 +27,9 @@ CPPFLAGS += -DVERSION=\"${GIT_VERSION}\"
 
 .PHONY: install clean uninstall
 
-all: i3lock
+all: i4lock
 
-i3lock: ${FILES}
+i4lock: ${FILES}
 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 clean:
@@ -38,7 +38,7 @@ clean:
 install: all
 	$(INSTALL) -d $(DESTDIR)$(PREFIX)/bin
 	$(INSTALL) -d $(DESTDIR)$(SYSCONFDIR)/pam.d
-	$(INSTALL) -m 755 i3lock $(DESTDIR)$(PREFIX)/bin/i3lock
+	$(INSTALL) -m 755 i4lock $(DESTDIR)$(PREFIX)/bin/i4lock
 	$(INSTALL) -m 644 i3lock.pam $(DESTDIR)$(SYSCONFDIR)/pam.d/i3lock
 
 uninstall:
