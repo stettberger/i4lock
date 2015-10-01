@@ -259,67 +259,50 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
         /* After the user pressed any valid key or the backspace key, we
          * highlight a random part of the unlock indicator to confirm this
          * keypress. */
-        if (unlock_state == STATE_KEY_ACTIVE ||
-            unlock_state == STATE_BACKSPACE_ACTIVE) {
-            cairo_new_sub_path(ctx);
-            static int pos = 6;
-            double highlight_start = ((int)(pos * M_PI / 5.0 * 100) % ((int)(2 * M_PI * 100)))/100.0;
-            if (unlock_state == STATE_KEY_ACTIVE)
-                pos ++;
-            else
-                pos --;
-            double highlight_end = highlight_start + (M_PI * 1.6);
-            cairo_arc(ctx,
-                      BUTTON_CENTER /* x */,
-                      BUTTON_CENTER /* y */,
-                      BUTTON_RADIUS /* radius */,
-                      highlight_start,
-                      highlight_end);
-            cairo_set_source_rgb(ctx, 0.69,0.11,0.18);
-            cairo_stroke(ctx);
+        cairo_new_sub_path(ctx);
+        static int pos = 6;
+        double highlight_start = ((int)(pos * M_PI / 5.0 * 100) % ((int)(2 * M_PI * 100)))/100.0;
+        if (unlock_state == STATE_KEY_ACTIVE)
+            pos ++;
+        else
+            pos --;
+        double highlight_end = highlight_start + (M_PI * 1.6);
+        cairo_arc(ctx,
+                  BUTTON_CENTER /* x */,
+                  BUTTON_CENTER /* y */,
+                  BUTTON_RADIUS /* radius */,
+                  highlight_start,
+                  highlight_end);
+        cairo_set_source_rgb(ctx, 0.69,0.11,0.18);
+        cairo_stroke(ctx);
 
-            // Draw Triangle
-            {
-                double start_x = BUTTON_CENTER + BUTTON_RADIUS * cos(highlight_end);
-                double start_y = BUTTON_CENTER + BUTTON_RADIUS * sin(highlight_end);
-                double end_x =   BUTTON_CENTER + BUTTON_RADIUS * cos(highlight_end + M_PI/6.0);
-                double end_y =   BUTTON_CENTER + BUTTON_RADIUS * sin(highlight_end + M_PI/6.0);
+        // Draw Triangle
+        {
+            double start_x = BUTTON_CENTER + BUTTON_RADIUS * cos(highlight_end);
+            double start_y = BUTTON_CENTER + BUTTON_RADIUS * sin(highlight_end);
+            double end_x =   BUTTON_CENTER + BUTTON_RADIUS * cos(highlight_end + M_PI/6.0);
+            double end_y =   BUTTON_CENTER + BUTTON_RADIUS * sin(highlight_end + M_PI/6.0);
 
-                double angle = atan2 (end_y - start_y, end_x - start_x) + M_PI;
+            double angle = atan2 (end_y - start_y, end_x - start_x) + M_PI;
 
-                double arrow_lenght_ = 60.0;
-                double arrow_degrees_ = 0.6;
+            double arrow_lenght_ = 60.0;
+            double arrow_degrees_ = 0.6;
 
-                double x1 = end_x + arrow_lenght_ * cos(angle - arrow_degrees_);
-                double y1 = end_y + arrow_lenght_ * sin(angle - arrow_degrees_);
-                double  x2 = end_x + arrow_lenght_ * cos(angle + arrow_degrees_);
-                double y2 = end_y + arrow_lenght_ * sin(angle + arrow_degrees_);
+            double x1 = end_x + arrow_lenght_ * cos(angle - arrow_degrees_);
+            double y1 = end_y + arrow_lenght_ * sin(angle - arrow_degrees_);
+            double  x2 = end_x + arrow_lenght_ * cos(angle + arrow_degrees_);
+            double y2 = end_y + arrow_lenght_ * sin(angle + arrow_degrees_);
 
-                cairo_move_to(ctx, end_x, end_y);
-                cairo_line_to(ctx, x1, y1);
-                cairo_line_to(ctx, x2, y2);
-                cairo_fill(ctx);
-            }
-
-
-            /* Draw two little separators for the highlighted part of the
-             * unlock indicator. */
-            cairo_set_source_rgb(ctx, 0, 0, 0);
-            /* cairo_arc(ctx, */
-            /*           BUTTON_CENTER /\* x *\/, */
-            /*           BUTTON_CENTER /\* y *\/, */
-            /*           BUTTON_RADIUS /\* radius *\/, */
-            /*           highlight_start /\* start *\/, */
-            /*           highlight_start + (M_PI / 128.0) /\* end *\/); */
-            /* cairo_stroke(ctx); */
-            /* cairo_arc(ctx, */
-            /*           BUTTON_CENTER /\* x *\/, */
-            /*           BUTTON_CENTER /\* y *\/, */
-            /*           BUTTON_RADIUS /\* radius *\/, */
-            /*           highlight_start + (M_PI * 1.6) /\* start *\/, */
-            /*           (highlight_start + (M_PI * 1.6)) + (M_PI / 128.0) /\* end *\/); */
-            /* cairo_stroke(ctx); */
+            cairo_move_to(ctx, end_x, end_y);
+            cairo_line_to(ctx, x1, y1);
+            cairo_line_to(ctx, x2, y2);
+            cairo_fill(ctx);
         }
+
+
+        /* Draw two little separators for the highlighted part of the
+         * unlock indicator. */
+        cairo_set_source_rgb(ctx, 0, 0, 0);
     }
 
     if (xr_screens > 0) {
